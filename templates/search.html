@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="w-full bg-gray-50 dark:bg-gray-900 md:h-screen pt-[220px] px-8 xl:px-0">
-    <div class="max-w-[1240px] flex flex-col items-center justify-center mx-auto">
-        <h1 class="mb-6 text-3xl xl:text-6xl text-indigo-800 text-center">Get The Right Job You Deserve</h1>
-        <h3 class="mb-6 text-[20px] xl:text-3xl text-indigo-800 text-center">Find jobs, create trackable resumes and
-            enrich
-            you
-            applications</h3>
+
+<section class="bg-gray-50 mt-10 mb-11 h-screen py-12">
+    <div class="max-w-[1240px] mx-auto p-5">
         <form action="#"
             class="flex flex-col sm:flex-row items-center justify-between w-full py-5 font-medium text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3">
             <div class="w-[100%]">
@@ -17,22 +13,22 @@
             </div>
 
             <div class="w-[100%]">
-                <select id="category"
+                <select id="location"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
                     <option selected="">Select Location</option>
-                    <option value="TV">Cape Town</option>
-                    <option value="PC">Durban</option>
-                    <option value="GA">Johannesburg</option>
-                    <option value="PH">Gqeberha</option>
+                    <option value="Cape Town">Cape Town</option>
+                    <option value="Durban">Durban</option>
+                    <option value="Johannesburg">Johannesburg</option>
+                    <option value="Gqeberha">Gqeberha</option>
                 </select>
             </div>
             <div class="w-[100%]">
-                <select id="category"
+                <select id="job_type"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
                     <option selected="">Job Type</option>
-                    <option value="TV">Remote</option>
-                    <option value="PC">Hybrid</option>
-                    <option value="GA">Onsite</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Onsite">Onsite</option>
                 </select>
             </div>
             <div class="w-full sm:w-[40%]">
@@ -42,65 +38,8 @@
                 </button>
             </div>
         </form>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 mt-11 w-full">
-            <div
-                class="w-full md:max-w-xl bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-                <div class="p-5">
-                    <a href="#">
-                        <h5 class="mb-2 text-1xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Job
-                            Seeker</h5>
-                    </a>
-                    <p class="mb-3 text-[12px] md:text-[16px] font-normal text-gray-700 dark:text-gray-400">Browse you
-                        IT Jobs today and start your
-                        career
-                        today</p>
-                    <a href="#"
-                        class="inline-flex  items-center px-3 py-2 text-[12px] md:text-sm font-medium text-center text-white bg-indigo-500 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                        Browse Job
-                        <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div
-                class="w-full md:max-w-xl bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-                <div class="p-5">
-                    <a href="#">
-                        <h5 class="mb-2 text-1xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Employers</h5>
-                    </a>
-                    <p class="mb-3 text-[12px] md:text-[16px] font-normal text-gray-700 dark:text-gray-400">Post a new
-                        Job to recruit your dream
-                        employee
-                    </p>
-                    <a href="#"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-500 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                        Add Job
-                        <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-
-
-
-
-<section class="bg-slate-400 mt-10 mb-11 h-full py-12">
-    <div class="max-w-[1240px] mx-auto p-5">
-        <h3 class="text-center text-2xl md:text-3xl text-gray-200 font-bold mb-10">Recent Jobs</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-11">
 
             <!--Start-->
             <div
@@ -177,16 +116,6 @@
 
         </div>
     </div>
-
-
 </section>
-
-<div class="flex justify-center mt-11 mb-11">
-    <button
-        class="inline-flex items-center px-3 py-2 text-xl font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-        View All Jobs
-    </button>
-</div>
-
 
 {% endblock content %}
