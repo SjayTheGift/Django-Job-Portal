@@ -12,9 +12,3 @@ def job_details(request, pk):
 
 def add_job(request):
     return render(request, 'add_job.html', )
-
-def login(request):
-    return render(request, 'login.html')
-
-def register(request):
-    return render(request, 'register.html')
