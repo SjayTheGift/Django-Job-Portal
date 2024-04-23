@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
 
 class User(AbstractUser):
-    username = None
     email = models.EmailField(_("email address"), unique=True)
 
     USERNAME_FIELD = "email"
@@ -25,6 +24,9 @@ class Employer(models.Model):
     contact_info = models.CharField(max_length=100)
     company_description = models.TextField()
 
+    def __str__(self) -> str:
+        return self.user.email
+
 
 class JobSeeker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -32,3 +34,6 @@ class JobSeeker(models.Model):
     last_name = models.CharField(max_length=100)
     education_history = models.TextField()
     desired_roles = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.user.email
