@@ -1,9 +1,13 @@
 # job_listing/forms.py
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import Group
-from .models import User, JobSeeker, Employer
+from .models import JobSeeker, Employer
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class RegistrationForm(UserCreationForm):
     USER_TYPES = (
@@ -31,20 +35,26 @@ class RegistrationForm(UserCreationForm):
         if password1 and password2 and password1 != password2:
             self.add_error('password2', "Passwords do not match.")
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data.get('email')
-        if commit:
-            user.save()
-            user_type = self.cleaned_data.get('user_type')
-            if user_type == 'employer':
-                group = Group.objects.get(name='Employers')
-                Employer.objects.create(user=user)
-            elif user_type == 'jobseeker':
-                group = Group.objects.get(name='Job Seekers')
-                JobSeeker.objects.create(user=user)
-            user.groups.add(group)
+class LoginForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput)
 
-        return user
+    def is_valid(self):
+        valid = super().is_valid()  # Call the parent's is_valid() method
+
+        if valid:
+            email = self.cleaned_data.get('email')
+            password = self.cleaned_data.get('password')
+
+            # Perform your custom validation logic here
+            if not email or not password:
+                self.add_error(None, 'Invalid email or password.')
+
+            # Add more custom validation rules as needed
+
+        return valid
+
+    
+    
 
     
