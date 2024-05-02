@@ -1,8 +1,7 @@
 # job_listing/forms.py
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.forms import UserCreationForm
 from .models import JobSeeker, Employer
 
 from django.contrib.auth import get_user_model
@@ -26,6 +25,13 @@ class RegistrationForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('This email address is already registered.')
         return email
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
     def clean(self):
         cleaned_data = super().clean()
@@ -50,11 +56,4 @@ class LoginForm(forms.Form):
             if not email or not password:
                 self.add_error(None, 'Invalid email or password.')
 
-            # Add more custom validation rules as needed
-
         return valid
-
-    
-    
-
-    

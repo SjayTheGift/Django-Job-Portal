@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import views as auth_views
+from django.urls import reverse
 
 from .forms import RegistrationForm, LoginForm
 
@@ -21,7 +22,7 @@ def register_view(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(request, f"{field}: {error}")
+                    messages.error(request, f"{error}")
             return redirect('register')
     else:
         form = RegistrationForm()
@@ -31,11 +32,6 @@ def register_view(request):
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST, request.POST)
-        # email = request.POST.get('email')
-        # password = request.POST.get('password')
-        # print(f'email {email} password {password}')
-
-        print(form.is_valid())
         if form.is_valid():
             email = request.POST.get('email')
             password = request.POST.get('password')
@@ -43,7 +39,7 @@ def login_view(request):
            
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Replace 'home' with the desired URL name for the home page
+                return redirect(get_success_url(request))
         else:
             messages.error(request, "Invalid username or password. Please try again.")
             return redirect('login')
@@ -51,3 +47,17 @@ def login_view(request):
         form = LoginForm()
     
     return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home') 
+
+
+def get_success_url(request):
+    next_url = request.POST.get('next')
+    print(next_url)
+
+    if next_url and next_url != '':
+        return next_url
+    else:
+        return reverse('add_job')

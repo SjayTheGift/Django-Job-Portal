@@ -23,6 +23,7 @@ class Employer(models.Model):
     industry = models.CharField(max_length=100)
     contact_info = models.CharField(max_length=100)
     company_description = models.TextField()
+    company_info_done = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user.email
@@ -34,6 +35,7 @@ class JobSeeker(models.Model):
     last_name = models.CharField(max_length=100)
     education_history = models.TextField()
     desired_roles = models.CharField(max_length=200)
+    job_seeker_profile_done = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user.email
