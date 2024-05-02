@@ -28,6 +28,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault('is_job_seeker', False)
         extra_fields.setdefault('is_employer', False)
+        extra_fields.setdefault("username", email)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superuser must have is_staff=True."))
