@@ -52,6 +52,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-11">
 
             <!--Start-->
+            {% for job in jobs %}
             <div
                 class="w-full bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
@@ -122,7 +123,7 @@
                 </div>
             </div>
             <!--End-->
-
+            {% endfor %}
 
         </div>
     </div>

@@ -1,14 +1,18 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CreateJobForm
+from .models import JobListing
+from users.models import User, Employer
 
 def index(request):
     return render(request, 'index.html')
 
-def search(request):
-    return render(request, 'search.html')
+def jobs_list_view(request):
+    jobs = JobListing.objects.all().order_by("-date_posted")
+    context = {"jobs": jobs}
+    return render(request, 'jobs_list.html', context)
 
 # def jobs_list_view(request):
 #     return render(request, 'job_list.html')
@@ -29,16 +33,24 @@ def check_login_view(request):
 
 @login_required(login_url='login')
 def add_job(request):
+    if not request.user.is_employer:
+        return redirect('access_denied')
+     
     if request.method == "POST":
         form = CreateJobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            job.company = request.company
-            is_employer = request.company.user.is_employer
-            if is_employer :
+            email = request.user.email
+
+            user = User.objects.get(email=email)
+            employer = Employer.objects.get(user=user)
+
+            job.company = employer
+
+            if request.user.is_employer:
                 job.save()
                 messages.info(request, "New Job has been created")
-                return redirect("jobs")
+                return redirect("add_job")
             else:
                 messages.warning(request, "User can not add on page")
         else:
