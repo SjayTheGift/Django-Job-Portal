@@ -10,12 +10,10 @@ def index(request):
     return render(request, 'index.html')
 
 def jobs_list_view(request):
-    jobs = JobListing.objects.all().order_by("-date_posted")
+    jobs = JobListing.objects.order_by("-date_posted")
     context = {"jobs": jobs}
     return render(request, 'jobs_list.html', context)
 
-# def jobs_list_view(request):
-#     return render(request, 'job_list.html')
 
 def job_details(request, pk):
     return render(request, 'job_details.html', {pk:pk})
@@ -33,18 +31,19 @@ def check_login_view(request):
 
 @login_required(login_url='login')
 def add_job(request):
+
     if not request.user.is_employer:
         return redirect('access_denied')
+    try:
+        employer = Employer.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        messages.error(request, "Employer profile not found.")
+        return redirect('access_denied')  
      
     if request.method == "POST":
         form = CreateJobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            email = request.user.email
-
-            user = User.objects.get(email=email)
-            employer = Employer.objects.get(user=user)
-
             job.company = employer
 
             if request.user.is_employer:
@@ -57,4 +56,6 @@ def add_job(request):
             messages.warning(request, "Something went wrong")
     else:
         form = CreateJobForm()
-    return render(request, 'add_job.html', {'form': form})
+    return render(request, 'add_job.html', {'form': form, 'employer': employer})
+
+

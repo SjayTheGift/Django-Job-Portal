@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-gray-50 h-screen py-12">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div
+            class="bg-white rounded-lg shadow dark:border w-full md:max-w-[1240px] mx-auto p-5 md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Update Profile
+                </h1>
+                <div>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li class="text-red-500">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <form class="space-y-4 md:space-y-6" method="POST">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="first_name"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                First Name
+                            </label>
+                            <input type="text" name="first_name" id="first_name" placeholder="e.g John"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                required="" value="{{ job_seeker.first_name|default:'' }}">
+                        </div>
+                        <div>
+                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Last Name
+                            </label>
+                            <input type="text" name="last_name" id="last_name" placeholder="e.g Doe"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                required="" value="{{ job_seeker.last_name|default:'' }}">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="desired_roles" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Desired role
+                        </label>
+                        <input type="text" name="desired_roles" id="desired_roles" placeholder="+27 61 555 3000"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required="" value="{{ job_seeker.desired_roles|default:'' }}">
+                    </div>
+                    <div>
+                        <label for="company_description"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Education History
+                        </label>
+                        <textarea name="education_history" id="education_history"
+                            placeholder="Please provide highest qualification" cols="4" rows="4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required>{{ job_seeker.education_history|default:'' }}</textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
+                        Update
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
