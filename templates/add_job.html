@@ -9,26 +9,35 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Add Job
                 </h1>
-                <form class="space-y-4 md:space-y-6" action="#">
+                <div>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li class="text-red-500">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <form class="space-y-4 md:space-y-6" method="POST">
+                    {% csrf_token %}
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label for="job_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Job Type
                             </label>
-                            <select id="job_type"
+                            <select id="job_type" name="job_type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                                <option selected="">Job Type</option>
+                                <option selected>Job Type</option>
                                 <option value="Remote">Remote</option>
                                 <option value="Hybrid">Hybrid</option>
                                 <option value="Onsite">Onsite</option>
                             </select>
                         </div>
                         <div>
-                            <label for="job_listing"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Job Listing Name
                             </label>
-                            <input type="text" name="job_listing" id="job_listing" placeholder="e.g Software Developer"
+                            <input type="text" name="title" id="title" placeholder="e.g Software Developer"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required="">
                         </div>
@@ -44,9 +53,9 @@
                             <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Location
                             </label>
-                            <select id="location"
+                            <select id="location" name="location"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                                <option selected="">Select Location</option>
+                                <option selected>Select Location</option>
                                 <option value="Cape Town">Cape Town</option>
                                 <option value="Durban">Durban</option>
                                 <option value="Johannesburg">Johannesburg</option>
@@ -56,10 +65,19 @@
                     </div>
 
                     <div>
+                        <label for="experience" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Years of Experience
+                        </label>
+                        <input type="text" name="experience" id="experience" placeholder="2-4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required="">
+                    </div>
+
+                    <div>
                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Description
                         </label>
-                        <textarea type="text" name="description" id="description"
+                        <textarea name="description" id="description"
                             placeholder="Add any job duties, expectations, requirements, etc" cols="4" rows="4"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required>
@@ -67,25 +85,6 @@
                     </div>
 
 
-                    <div>
-                        <label for="company_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Company Name
-                        </label>
-                        <input type="text" name="company_name" id="company_name" placeholder="e.g PNP"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required="">
-                    </div>
-                    <div>
-                        <label for="company_description"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Company Description
-                        </label>
-                        <textarea type="text" name="company_description" id="company_description"
-                            placeholder="What does your company do?" cols="4" rows="4"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required>
-                        </textarea>
-                    </div>
                     <button type="submit"
                         class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
                         Add
