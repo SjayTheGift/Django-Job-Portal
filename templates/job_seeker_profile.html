@@ -13,7 +13,15 @@
                     {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}
-                        <li class="text-red-500">{{ message }}</li>
+                        {% if message.tags == "success" %}
+                        <li class="font-semibold text-green-600">
+                            {{ message }}
+                        </li>
+                        {% else %}
+                        <li class="font-semibold text-red-600">
+                            {{ message }}
+                        </li>
+                        {% endif%}
                         {% endfor %}
                     </ul>
                     {% endif %}
@@ -43,7 +51,7 @@
                         <label for="desired_roles" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Desired role
                         </label>
-                        <input type="text" name="desired_roles" id="desired_roles" placeholder="+27 61 555 3000"
+                        <input type="text" name="desired_roles" id="desired_roles" placeholder="e.g Web Developer"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required="" value="{{ job_seeker.desired_roles|default:'' }}">
                     </div>
@@ -55,7 +63,9 @@
                         <textarea name="education_history" id="education_history"
                             placeholder="Please provide highest qualification" cols="4" rows="4"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required>{{ job_seeker.education_history|default:'' }}</textarea>
+                            required>
+                            {{ job_seeker.education_history|default:'' }}
+                        </textarea>
                     </div>
 
                     <button type="submit"

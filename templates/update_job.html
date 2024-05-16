@@ -8,7 +8,7 @@
             class="bg-white rounded-lg shadow dark:border w-full md:max-w-[1240px] mx-auto p-5 md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Add Job
+                    Update Job
                 </h1>
                 <div>
                     {% if messages %}
@@ -36,10 +36,9 @@
                             </label>
                             <select id="job_type" name="job_type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                                <option selected>Job Type</option>
-                                <option value="Remote">Remote</option>
-                                <option value="Hybrid">Hybrid</option>
-                                <option value="Onsite">Onsite</option>
+                                <option value="Remote" {% if job.job_type == 'Remote' %}selected{% endif %}>Remote</option>
+                                <option value="Hybrid" {% if job.job_type == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                                <option value="Onsite" {% if job.job_type == 'Onsite' %}selected{% endif %}>Onsite</option>
                             </select>
                         </div>
                         <div>
@@ -48,7 +47,7 @@
                             </label>
                             <input type="text" name="title" id="title" placeholder="e.g Software Developer"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                required>
+                                value="{{ job.title|default:'' }}" required>
                         </div>
                         <div>
                             <label for="salary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -56,7 +55,7 @@
                             </label>
                             <input type="text" name="salary" id="salary" placeholder="R30000.00"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                required>
+                                value="{{ job.salary|default:''  }}" required>
                         </div>
                         <div>
                             <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -64,11 +63,10 @@
                             </label>
                             <select id="location" name="location"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] md:text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                                <option selected>Select Location</option>
-                                <option value="Cape Town">Cape Town</option>
-                                <option value="Durban">Durban</option>
-                                <option value="Johannesburg">Johannesburg</option>
-                                <option value="Gqeberha">Gqeberha</option>
+                                <option value="Cape Town" {% if job.location == 'Cape Town' %}selected{% endif %}>Cape Town</option>
+                                <option value="Durban" {% if job.location == 'Durban' %}selected{% endif %}>Durban</option>
+                                <option value="Johannesburg" {% if job.location == 'Johannesburg' %}selected{% endif %}>Johannesburg</option>
+                                <option value="Gqeberha" {% if job.location == 'Gqeberha' %}selected{% endif %}>Gqeberha</option>
                             </select>
                         </div>
                     </div>
@@ -79,7 +77,7 @@
                         </label>
                         <input type="text" name="experience" id="experience" placeholder="2-4"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required>
+                            value="{{ job.experience|default:'' }}" required>
                     </div>
 
                     <div>
@@ -90,13 +88,14 @@
                             placeholder="Add any job duties, expectations, requirements, etc" cols="4" rows="4"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required>
+                            {{ job.description|default:'' }}
                         </textarea>
                     </div>
 
 
                     <button type="submit"
                         class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                        Add
+                        Update Job
                     </button>
 
                 </form>
@@ -111,7 +110,7 @@
             class="bg-white rounded-lg shadow dark:border w-full md:max-w-[1240px] mx-auto p-5 md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Please Complete Profile to be able to add job
+                    Please Complete Profile to be able to update job
                 </h1>
 
             </div>

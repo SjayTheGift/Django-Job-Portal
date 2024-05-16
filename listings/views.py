@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CreateJobForm
+from .forms import CreateJobForm, UpdateJobForm
 from .models import JobListing
 from users.models import User, Employer
 
@@ -48,7 +48,7 @@ def add_job(request):
 
             if request.user.is_employer:
                 job.save()
-                messages.info(request, "New Job has been created")
+                messages.success(request, "New Job has been created")
                 return redirect("add_job")
             else:
                 messages.warning(request, "User can not add on page")
@@ -58,4 +58,40 @@ def add_job(request):
         form = CreateJobForm()
     return render(request, 'add_job.html', {'form': form, 'employer': employer})
 
+@login_required(login_url='login')
+def update_job_view(request, pk):
+    job = get_object_or_404(JobListing, id=pk)
+
+    if job.company.user != request.user:
+        return redirect('access_denied')
+    
+    if not request.user.is_employer:
+        return redirect('access_denied')
+    try:
+        employer = Employer.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        messages.error(request, "Employer profile not found.")
+        return redirect('access_denied')  
+
+    if request.method == 'POST':
+        form = UpdateJobForm(request.POST, instance=job, company=request.user)
+        if form.is_valid():
+            form.save()
+            if request.user.is_employer:
+                messages.success(request, "Job has been updated")
+                return redirect(reverse('update_job', kwargs={'pk': pk})) 
+            else:
+                messages.warning(request, "User can not update on page")
+        else:
+            messages.warning(request, "Something went wrong")
+    else:
+        form = UpdateJobForm(instance=job, company=request.user)
+    
+    context = {
+        'form': form,
+        'job': job,
+        "employer": employer,
+    }
+    
+    return render(request, 'update_job.html', context)
 

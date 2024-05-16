@@ -40,7 +40,10 @@ def login_view(request):
            
             if user is not None:
                 login(request, user)
-                return redirect(get_success_url(request))
+                if request.user.is_job_seeker:
+                    return redirect('job_seeker_profile')
+                else:
+                    return redirect('employer_profile')
         else:
             messages.error(request, "Invalid username or password. Please try again.")
             return redirect('login')
