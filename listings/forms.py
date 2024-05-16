@@ -20,3 +20,21 @@ class CreateJobForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+class UpdateJobForm(forms.ModelForm):
+    class Meta:
+        model = JobListing
+        fields = ('title', 'description', 'location', 'job_type', 'experience', 'salary')
+        exclude = ['company']  
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company', None) 
+        super().__init__(*args, **kwargs)
+
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     if self.company:
+    #         instance.company = self.company
+    #     if commit:
+    #         instance.save()
+    #     return instance

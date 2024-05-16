@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from django.urls import reverse
 
 from .forms import RegistrationForm, LoginForm
+from .models import Employer, User, JobSeeker
 
 def register_view(request):
     if request.method == 'POST':
@@ -39,7 +40,10 @@ def login_view(request):
            
             if user is not None:
                 login(request, user)
-                return redirect(get_success_url(request))
+                if request.user.is_job_seeker:
+                    return redirect('job_seeker_profile')
+                else:
+                    return redirect('employer_profile')
         else:
             messages.error(request, "Invalid username or password. Please try again.")
             return redirect('login')
@@ -61,3 +65,74 @@ def get_success_url(request):
         return next_url
     else:
         return reverse('add_job')
+
+
+@login_required(login_url='login')
+def employer_profile_view(request):
+    if not request.user.is_authenticated or not request.user.is_employer:
+        return redirect('access_denied')
+    
+    try:
+        employer = Employer.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        employer = None
+    
+    if request.method == "POST":
+        # Handle the form submission and update the profile
+        # Assuming the form fields are named 'company_name', 'industry', 'contact_info', and 'company_description'
+        company_name = request.POST.get('company_name')
+        industry = request.POST.get('industry')
+        contact_info = request.POST.get('contact_info')
+        company_description = request.POST.get('company_description')
+
+        if employer:
+            # Update the existing employer profile
+            employer.company_name = company_name
+            employer.industry = industry
+            employer.contact_info = contact_info
+            employer.company_description = company_description
+            employer.company_info_done = True
+            employer.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('employer_profile')  # Replace 'employer_profile_view' with the appropriate URL or view name
+    
+    context = {
+        'employer': employer
+    }
+    
+    return render(request, 'employer_profile.html', context)
+
+@login_required(login_url='login')
+def job_seeker_profile_view(request):
+    if not request.user.is_authenticated or not request.user.is_job_seeker:
+        return redirect('access_denied')
+    
+    try:
+        job_seeker = JobSeeker.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        job_seeker = None
+    
+    if request.method == "POST":
+        # Handle the form submission and update the profile
+        # Assuming the form fields are named 'company_name', 'industry', 'contact_info', and 'company_description'
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        education_history = request.POST.get('education_history')
+        desired_roles = request.POST.get('desired_roles')
+
+        if job_seeker:
+            # Update the existing employer profile
+            job_seeker.first_name = first_name
+            job_seeker.last_name = last_name
+            job_seeker.education_history = education_history
+            job_seeker.desired_roles = desired_roles
+            job_seeker.job_seeker_profile_done = True
+            job_seeker.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('job_seeker_profile')  # Replace 'employer_profile_view' with the appropriate URL or view name
+    
+    context = {
+        'job_seeker': job_seeker
+    }
+    
+    return render(request, 'job_seeker_profile.html', context)

@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CreateJobForm
+from .forms import CreateJobForm, UpdateJobForm
 from .models import JobListing
 from users.models import User, Employer
 
@@ -10,12 +10,10 @@ def index(request):
     return render(request, 'index.html')
 
 def jobs_list_view(request):
-    jobs = JobListing.objects.all().order_by("-date_posted")
+    jobs = JobListing.objects.order_by("-date_posted")
     context = {"jobs": jobs}
     return render(request, 'jobs_list.html', context)
 
-# def jobs_list_view(request):
-#     return render(request, 'job_list.html')
 
 def job_details(request, pk):
     return render(request, 'job_details.html', {pk:pk})
@@ -33,23 +31,24 @@ def check_login_view(request):
 
 @login_required(login_url='login')
 def add_job(request):
+
     if not request.user.is_employer:
         return redirect('access_denied')
+    try:
+        employer = Employer.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        messages.error(request, "Employer profile not found.")
+        return redirect('access_denied')  
      
     if request.method == "POST":
         form = CreateJobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            email = request.user.email
-
-            user = User.objects.get(email=email)
-            employer = Employer.objects.get(user=user)
-
             job.company = employer
 
             if request.user.is_employer:
                 job.save()
-                messages.info(request, "New Job has been created")
+                messages.success(request, "New Job has been created")
                 return redirect("add_job")
             else:
                 messages.warning(request, "User can not add on page")
@@ -57,4 +56,42 @@ def add_job(request):
             messages.warning(request, "Something went wrong")
     else:
         form = CreateJobForm()
-    return render(request, 'add_job.html', {'form': form})
+    return render(request, 'add_job.html', {'form': form, 'employer': employer})
+
+@login_required(login_url='login')
+def update_job_view(request, pk):
+    job = get_object_or_404(JobListing, id=pk)
+
+    if job.company.user != request.user:
+        return redirect('access_denied')
+    
+    if not request.user.is_employer:
+        return redirect('access_denied')
+    try:
+        employer = Employer.objects.get(user=request.user)
+    except Employer.DoesNotExist:
+        messages.error(request, "Employer profile not found.")
+        return redirect('access_denied')  
+
+    if request.method == 'POST':
+        form = UpdateJobForm(request.POST, instance=job, company=request.user)
+        if form.is_valid():
+            form.save()
+            if request.user.is_employer:
+                messages.success(request, "Job has been updated")
+                return redirect(reverse('update_job', kwargs={'pk': pk})) 
+            else:
+                messages.warning(request, "User can not update on page")
+        else:
+            messages.warning(request, "Something went wrong")
+    else:
+        form = UpdateJobForm(instance=job, company=request.user)
+    
+    context = {
+        'form': form,
+        'job': job,
+        "employer": employer,
+    }
+    
+    return render(request, 'update_job.html', context)
+
