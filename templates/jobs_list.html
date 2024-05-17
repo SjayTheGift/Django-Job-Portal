@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load custom_filters %}
 {% block content %}
 
 <section class="bg-gray-50 mt-10 mb-11 h-screen py-12">
@@ -82,10 +83,10 @@
 
                     <div
                         class="flex flex-wrap  gap-3 items-center pb-3 mb-3 font-bold text-[12px] text-gray-700  dark:text-gray-400 border-b border-dashed border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                        <p>Albany, NY</p>
-                        <p>Remote</p>
-                        <p>2-4 years</p>
-                        <p>R30k Monthly</p>
+                        <p>{{ job.location }}</p>
+                        <p>{{ job.job_type }}</p>
+                        <p>{{ job.experience }} years</p>
+                        <p>{{ job.salary|money:"R,2"  }} Monthly</p>
                     </div>
                     <div class="flex gap-3 mb-3 text-gray-500 text-[12px] md:text-sm">
                         <p class="flex items-center gap-1">
@@ -96,7 +97,7 @@
                                     stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
 
-                            <span>Posted Today</span>
+                            <span>{{ job.date_posted|date:"M-d-Y"}}</span>
                         </p>
                         <p class="flex items-center gap-1">
                             <svg class="w-4 h-4 text-green-800 dark:text-white" aria-hidden="true"
@@ -110,7 +111,7 @@
                             Company Verified
                         </p>
                     </div>
-                    <a href="#"
+                    <a href="{% url 'job_details' job.pk %}"
                         class="inline-flex w-full  justify-center items-center text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
                         Read more
                         <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
