@@ -8,5 +8,6 @@ urlpatterns = [
     path('update/job/<int:pk>', views.update_job_view, name="update_job"),
     path('jobs/', views.jobs_list_view, name="jobs_list"),
     path('job/<int:pk>/', views.job_details, name="job_details"),
+    path('search/', views.search_jobs_view, name='search'),
     path('access-denied/', TemplateView.as_view(template_name='access_denied.html'), name='access_denied'),
 ]

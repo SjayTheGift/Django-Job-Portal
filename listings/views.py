@@ -102,3 +102,30 @@ def update_job_view(request, pk):
     
     return render(request, 'update_job.html', context)
 
+
+def search_jobs_view(request):
+    query = request.GET.get('title', '')
+    location = request.GET.get('location', '')
+    job_type = request.GET.get('job_type', '')
+
+    jobs = JobListing.objects.all().order_by("-date_posted")
+
+    if query:
+        jobs = jobs.filter(title__icontains=query)
+
+    if location:
+        jobs = jobs.filter(location__iexact=location)
+
+    if job_type:
+        jobs = jobs.filter(job_type__iexact=job_type)
+
+    filtered_jobs = jobs
+
+    context = {
+        'jobs': filtered_jobs,
+        'query': query,
+        'location': location,
+        'job_type': job_type,
+    }
+
+    return render(request, 'search.html', context)
