@@ -7,7 +7,9 @@ from .models import JobListing
 from users.models import User, Employer
 
 def index(request):
-    return render(request, 'index.html')
+    jobs = JobListing.objects.order_by("-date_posted")[:3]
+    context = {"jobs": jobs}
+    return render(request, 'index.html', context)
 
 def jobs_list_view(request):
     jobs = JobListing.objects.order_by("-date_posted")
@@ -16,7 +18,11 @@ def jobs_list_view(request):
 
 
 def job_details(request, pk):
-    return render(request, 'job_details.html', {pk:pk})
+    job = get_object_or_404(JobListing, id=pk)
+    
+    can_edit = job.company.user == request.user
+    context = {"job": job, "can_edit": can_edit}
+    return render(request, 'job_details.html', context)
 
 
 

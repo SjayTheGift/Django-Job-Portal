@@ -56,7 +56,7 @@
             <div
                 class="w-full md:max-w-xl bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-5">
-                    <a href="#">
+                    <a href="{% url 'jobs_list' %}">
                         <h5 class="mb-2 text-1xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Job
                             Seeker</h5>
                     </a>
@@ -64,7 +64,7 @@
                         IT Jobs today and start your
                         career
                         today</p>
-                    <a href="#"
+                    <a href="{% url 'jobs_list' %}"
                         class="inline-flex  items-center px-3 py-2 text-[12px] md:text-sm font-medium text-center text-white bg-indigo-500 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
                         Browse Job
                         <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
@@ -113,6 +113,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
             <!--Start-->
+            
+            {% for job in jobs %}
             <div
                 class="w-full bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
@@ -121,8 +123,7 @@
                 <div class="p-5">
                     <div class="flex justify-between">
                         <h5 class="mb-2 text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Product
-                            Designer
+                            {{ job.title }}
                         </h5>
                         <a href="" class="">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -135,16 +136,13 @@
                         </a>
                     </div>
 
-                    <p class="mb-3 font-normal text-[12px] md:text-sm text-gray-500 dark:text-gray-400">Here are the
-                        biggest enterprise
-                        technology
-                        acquisitions of 2021 so far, in reverse chronological order.</p>
+                    <p class="mb-3 font-normal text-[12px] md:text-sm text-gray-500 dark:text-gray-400">{{ job.description|truncatechars:50 }}</p>
 
                     <div
                         class="flex flex-wrap  gap-3 items-center pb-3 mb-3 font-bold text-[12px] text-gray-700  dark:text-gray-400 border-b border-dashed border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                        <p>Albany, NY</p>
-                        <p>Remote</p>
-                        <p>2-4 years</p>
+                        <p>{{ job.location }}</p>
+                        <p>{{ job.job_type }}</p>
+                        <p>{{ job.experience }} years</p>
                         <p>R30k Monthly</p>
                     </div>
                     <div class="flex gap-3 mb-3 text-gray-500 text-[12px] md:text-sm">
@@ -156,7 +154,7 @@
                                     stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
 
-                            <span>Posted Today</span>
+                            <span>{{ job.date_posted|date:"M-d-Y"}}</span>
                         </p>
                         <p class="flex items-center gap-1">
                             <svg class="w-4 h-4 text-green-800 dark:text-white" aria-hidden="true"
@@ -170,7 +168,7 @@
                             Company Verified
                         </p>
                     </div>
-                    <a href="#"
+                    <a href="{% url 'job_details' job.pk %}"
                         class="inline-flex w-full  justify-center items-center text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
                         Read more
                         <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
@@ -183,6 +181,7 @@
                 </div>
             </div>
             <!--End-->
+            {% endfor %}
 
 
         </div>
