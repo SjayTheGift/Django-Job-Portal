@@ -19,9 +19,10 @@ def jobs_list_view(request):
 
 def job_details(request, pk):
     job = get_object_or_404(JobListing, id=pk)
+    employer = Employer.objects.get(user=job.company.user)
     
     can_edit = job.company.user == request.user
-    context = {"job": job, "can_edit": can_edit}
+    context = {"job": job, "can_edit": can_edit, "employer": employer}
     return render(request, 'job_details.html', context)
 
 

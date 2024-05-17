@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_filters %}
 {% block content %}
 <section class="w-full bg-gray-50 dark:bg-gray-900 md:h-screen pt-[220px] px-8 xl:px-0">
     <div class="max-w-[1240px] flex flex-col items-center justify-center mx-auto">
@@ -143,7 +143,7 @@
                         <p>{{ job.location }}</p>
                         <p>{{ job.job_type }}</p>
                         <p>{{ job.experience }} years</p>
-                        <p>R30k Monthly</p>
+                        <p>{{ job.salary|money:"R"  }} Monthly</p>
                     </div>
                     <div class="flex gap-3 mb-3 text-gray-500 text-[12px] md:text-sm">
                         <p class="flex items-center gap-1">
